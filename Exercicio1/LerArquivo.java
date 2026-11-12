@@ -35,20 +35,20 @@ public class LerArquivo {
                 int quantidade = v.getQntVendida();
                 double valorVenda = quantidade * v.getPrecoU();
 
-                // Acumula faturamento por vendedor
+
                 faturamentoPorVendedor.put(
                         vendedor,
                         faturamentoPorVendedor.getOrDefault(vendedor, 0.0) + valorVenda
                 );
 
-                // Acumula quantidade por produto
+
                 quantidadePorProduto.put(
                         produto,
                         quantidadePorProduto.getOrDefault(produto, 0) + quantidade
                 );
             }
 
-            System.out.println("=== Faturamento Total por Vendedor ===");
+            System.out.println("=== Faturamento por Vendedor ===");
 
             for (String vendedor : faturamentoPorVendedor.keySet()) {
                 System.out.printf(
@@ -62,10 +62,68 @@ public class LerArquivo {
             consultarVendedor("Bruno");
             consultarVendedor("Diego");
 
+            System.out.println("\n=== Faturamento Total ===");
+
+            double total = 0;
+
+            for (double valor : faturamentoPorVendedor.values()) {
+                total += valor;
+            }
+
+            System.out.printf("Faturamento total: R$ %.2f%n", total);
+
+            System.out.println("\n=== Media por vendedor ===");
+            double media = total / faturamentoPorVendedor.size();
+            System.out.printf("Media por vendedor: R$ %.2f%n",media);
+
+            String maiorVendedor = "";
+            double maiorValor = 0;
+
+            for (String nome : faturamentoPorVendedor.keySet()) {
+                if (faturamentoPorVendedor.get(nome) > maiorValor) {
+                    maiorValor = faturamentoPorVendedor.get(nome);
+                    maiorVendedor = nome;
+                }
+            }
+            System.out.println("\n=== Maior Faturamento ===");
+            System.out.println("Melhor vendedor: " + maiorVendedor
+                    + " (R$ " + maiorValor + ")");
+
+            System.out.println("\n=== Participacao dos vendedores ===");
+
+            for (String nome : faturamentoPorVendedor.keySet()) {
+                double percentual = (faturamentoPorVendedor.get(nome) / total) * 100;
+
+                System.out.printf("%s: %.2f%%%n", nome, percentual);
+            }
+
+            System.out.println("\n=== Vendedores Acima da Media ===");
+            for (String nome : faturamentoPorVendedor.keySet()){
+                if (faturamentoPorVendedor.get(nome) > media){
+                    System.out.println(nome);
+                }
+            }
+
+
             System.out.println("\n=== Quantidade Total Vendida por Produto ===");
             for (String produto : quantidadePorProduto.keySet()) {
                 System.out.printf("%s: %d unidades%n", produto, quantidadePorProduto.get(produto));
             }
+
+            System.out.println("\n=== Produto mais vendido ===");
+            String produtoMaisVendido = "";
+            int maiorQuantidade = 0;
+
+            for (String produto : quantidadePorProduto.keySet()){
+                if (quantidadePorProduto.get(produto) > maiorQuantidade){
+                    maiorQuantidade = quantidadePorProduto.get(produto);
+                    produtoMaisVendido = produto;
+                }
+            }
+            System.out.println("Produto mais vendido: "
+                    + produtoMaisVendido +
+                    " ("
+                    + maiorQuantidade + " unidades)");
 
         }catch (FileNotFoundException e) {
             System.out.println("Erro: O arquivo 'vendas.csv' não foi encontrado no diretório.");
