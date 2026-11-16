@@ -1,0 +1,9 @@
+Votos desconsiderados (eleitor repetido): [e02, e03]
+Total de votos válidos: 9
+
+Resultado:
+C: 2 votos (22.22%)
+Java: 4 votos (44.44%)
+Python: 3 votos (33.33%)
+
+Vencedora: Java
